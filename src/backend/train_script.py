@@ -13,7 +13,7 @@ with open("config.json", "r") as config_file:
 def generate_train_data(tokenizer):
     batch_size = config["batch_size"]
 
-    train = pd.read_csv("data/train_split.csv")
+    train = pd.read_csv("../../data/train_split.csv")
     train_sentences = list(train["Messages"])
     train_labels = list(train["gen_label"])
     train_tokens = tokenizer(train_sentences, padding=True, truncation=True, return_tensors="pt")
@@ -58,11 +58,11 @@ def train(model, train_dataloader):
 
 if __name__ == "__main__":
 
-    model_name = config["model_name"]
+    model_name = "bert-base-uncased"
     tokenizer = BertTokenizer.from_pretrained(model_name)
     model = BertForSequenceClassification.from_pretrained(model_name, num_labels=2)  
     train_dataloader = generate_train_data(tokenizer)
     train(model, train_dataloader)
 
     # Save the trained model
-    model.save_pretrained("saved_model")
+    model.save_pretrained("../saved_model")

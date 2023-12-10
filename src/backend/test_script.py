@@ -12,7 +12,7 @@ with open("config.json", "r") as config_file:
 def generate_test_data(tokenizer):
     batch_size = config["batch_size"]
 
-    test = pd.read_csv("data/val_split.csv")
+    test = pd.read_csv("../../data/val_split.csv")
     test_sentences = list(test["Messages"])
     test_labels = list(test["gen_label"])
     test_tokens = tokenizer(test_sentences, padding=True, truncation=True, return_tensors="pt")
@@ -53,8 +53,8 @@ def test(model, test_dataloader):
     print(classification_rep)
 
 if __name__ == "__main__":
-    model_name = config["model_name"]
-    model = BertForSequenceClassification.from_pretrained("saved_model")
+    model_name = "bert-base-uncased"
+    model = BertForSequenceClassification.from_pretrained("../saved_model")
     tokenizer = BertTokenizer.from_pretrained(model_name)
     test_dataloader = generate_test_data(tokenizer)
     test(model, test_dataloader)

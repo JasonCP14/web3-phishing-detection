@@ -1,5 +1,4 @@
 {
-    "model_name": "bert-base-uncased",
     "learning_rate": 2e-5,
     "batch_size": 16,
     "num_epochs": 5
