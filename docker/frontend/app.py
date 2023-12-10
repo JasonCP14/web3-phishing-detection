@@ -1,17 +1,9 @@
-import torch
-
 from flask import Flask, render_template, request, jsonify
-from transformers import BertForSequenceClassification, BertTokenizer
+import requests
 
 app = Flask(__name__)
 
-# Load the fine-tuned BERT model and tokenizer
-model_name = "bert-base-uncased"
-model = BertForSequenceClassification.from_pretrained("../saved_model")
-tokenizer = BertTokenizer.from_pretrained(model_name)
-
-# Set the model in evaluation mode
-model.eval()
+BACKEND_URL = "http://backend:5000"  # Use the service name defined in docker-compose.yml
 
 @app.route("/")
 def index():
@@ -22,21 +14,18 @@ def classify():
     if request.method == "POST":
         user_input = request.form["user_input"]
 
-        # Tokenize and preprocess the input
-        tokens = tokenizer(user_input, padding=True, truncation=True, return_tensors="pt")
+        # Make a request to the backend API endpoint
+        response = requests.post(f"{BACKEND_URL}/classify", json={"text": user_input})
 
-        # Make prediction
-        with torch.no_grad():
-            outputs = model(**tokens)
-            logits = outputs.logits
-            probabilities = torch.softmax(logits, dim=1)
-            predicted_class = torch.argmax(probabilities, dim=1).item()
+        if response.status_code == 200:
+            result = response.json()["result"]
+            proba = response.json()["proba"]
+            
+        else:
+            result = "Unknown"
+            proba = "Unknown"
 
-        # Convert the result to a human-readable format
-        proba = round(max(probabilities[0]).item(), 2)
-        result = "Positive" if predicted_class == 1 else "Negative"
-
-        return render_template("result.html", user_input=user_input, proba=proba, result=result)
+        return render_template("result.html", user_input=user_input, result=result, proba=proba)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=5000)

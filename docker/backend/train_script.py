@@ -65,4 +65,4 @@ if __name__ == "__main__":
     train(model, train_dataloader)
 
     # Save the trained model
-    model.save_pretrained("saved_model")
+    model.save_pretrained("./saved_model")

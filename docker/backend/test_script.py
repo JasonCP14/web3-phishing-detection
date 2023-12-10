@@ -54,7 +54,7 @@ def test(model, test_dataloader):
 
 if __name__ == "__main__":
     model_name = "bert-base-uncased"
-    model = BertForSequenceClassification.from_pretrained("saved_model")
+    model = BertForSequenceClassification.from_pretrained("./saved_model")
     tokenizer = BertTokenizer.from_pretrained(model_name)
     test_dataloader = generate_test_data(tokenizer)
     test(model, test_dataloader)

@@ -7,7 +7,7 @@ services:
             context: /docker/backend
             dockerfile: Dockerfile
         volumes:
-            - ./saved_model:/app/saved_model  
+            - ./docker/backend/saved_model:/app/saved_model  
 
     frontend:
         build:
