@@ -4,14 +4,14 @@ services:
     backend:
         container_name: backend
         build:
-            context: /src/backend
+            context: /docker/backend
             dockerfile: Dockerfile
         volumes:
             - ./saved_model:/app/saved_model  
 
     frontend:
         build:
-            context: /src/frontend
+            context: /docker/frontend
             dockerfile: Dockerfile
         ports:
             - "5000:5000"
