@@ -12,7 +12,7 @@ with open("config.json", "r") as config_file:
 def generate_test_data(tokenizer):
     batch_size = config["batch_size"]
 
-    test = pd.read_csv("test.csv")[400:]
+    test = pd.read_csv("data/test.csv")[400:]
     test_sentences = list(test["Messages"])
     test_labels = list(test["gen_label"])
     test_tokens = tokenizer(test_sentences, padding=True, truncation=True, return_tensors="pt")
