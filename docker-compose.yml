@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+    backend:
+        container_name: backend
+        build:
+            context: /src/backend
+            dockerfile: Dockerfile
+        volumes:
+            - ./saved_model:/app/saved_model  
+
+    frontend:
+        build:
+            context: /src/frontend
+            dockerfile: Dockerfile
+        ports:
+            - "5000:5000"
+        depends_on:
+            - backend

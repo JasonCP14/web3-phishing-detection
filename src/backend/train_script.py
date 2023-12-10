@@ -3,8 +3,9 @@ import pandas as pd
 import torch
 
 from torch.utils.data import DataLoader, TensorDataset
+from torch.optim import AdamW
 from tqdm import tqdm
-from transformers import AdamW, BertForSequenceClassification, BertTokenizer
+from transformers import BertForSequenceClassification, BertTokenizer
 
 with open("config.json", "r") as config_file:
     config = json.load(config_file)
@@ -12,7 +13,7 @@ with open("config.json", "r") as config_file:
 def generate_train_data(tokenizer):
     batch_size = config["batch_size"]
 
-    train = pd.read_csv("data/test.csv")[:400]
+    train = pd.read_csv("data/train_split.csv")
     train_sentences = list(train["Messages"])
     train_labels = list(train["gen_label"])
     train_tokens = tokenizer(train_sentences, padding=True, truncation=True, return_tensors="pt")

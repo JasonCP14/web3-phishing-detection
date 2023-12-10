@@ -37,10 +37,10 @@ def classify():
             predicted_class = torch.argmax(probabilities, dim=1).item()
 
         # Convert the result to a human-readable format
+        proba = round(max(probabilities[0]).item(), 2)
         result = "Positive" if predicted_class == 1 else "Negative"
 
-        return render_template("result.html", user_input=user_input, result=result)
+        return render_template("result.html", user_input=user_input, proba=proba, result=result)
 
 if __name__ == "__main__":
-    
     app.run(debug=True)
