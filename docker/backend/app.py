@@ -18,7 +18,7 @@ def classify():
     data = request.get_json()
 
     if "text" not in data:
-        return jsonify({"error": "Missing "text" field in the request"}), 400
+        return jsonify({"error": "Missing 'text' field in the request"}), 400
 
     text = data["text"]
 
