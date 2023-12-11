@@ -1,20 +1,43 @@
-import json
-import torch
-import pandas as pd
-
 from torch.utils.data import DataLoader, TensorDataset
 from transformers import BertTokenizer, BertForSequenceClassification 
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
-with open("config.json", "r") as config_file:
+import json
+import torch
+import pandas as pd
+
+
+with open("./config.json", "r") as config_file:
     config = json.load(config_file)
 
-def generate_test_data(tokenizer):
+def preprocess(test_data: pd.DataFrame) -> pd.DataFrame:
+    """Removes leading and trailing white spaces and quotation marks.
+
+    Args:
+        test_data (pd.DataFrame): Test data
+
+    Returns:
+        pd.DataFrame: Preprocessed test data
+    """
+
+    test_data["Messages"] = test_data.Messages.str.strip("\"'\s")
+    return test_data
+
+def generate_test_data(test_data: pd.DataFrame, tokenizer: BertTokenizer) -> DataLoader:
+    """Converts the test data into a test dataloader.
+
+    Args:
+        test_data (pd.DataFrame): Test data
+        tokenizer (BertTokenizer): Bert Tokenizer
+
+    Returns:
+        DataLoader: Test dataloader
+    """
+
     batch_size = config["batch_size"]
 
-    test = pd.read_csv("../data/val_split.csv")
-    test_sentences = list(test["Messages"])
-    test_labels = list(test["gen_label"])
+    test_sentences = list(test_data["Messages"])
+    test_labels = list(test_data["gen_label"])
     test_tokens = tokenizer(test_sentences, padding=True, truncation=True, return_tensors="pt")
 
     # Create PyTorch DataLoader
@@ -23,7 +46,14 @@ def generate_test_data(tokenizer):
 
     return test_dataloader
 
-def test(model, test_dataloader):
+def test(model: BertForSequenceClassification, test_dataloader: DataLoader) -> None:
+    """Evaluate the model on the test data.
+
+    Args:
+        model (BertForSequenceClassification): BERT model
+        test_dataloader (DataLoader): Test dataloader
+    """
+
     model.eval()
 
     # Lists to store predictions and true labels
@@ -53,8 +83,15 @@ def test(model, test_dataloader):
     print(classification_rep)
 
 if __name__ == "__main__":
+    # Retrieve BERT model and tokenizer
     model_name = "bert-base-uncased"
     model = BertForSequenceClassification.from_pretrained("../docker/backend/saved_model")
     tokenizer = BertTokenizer.from_pretrained(model_name)
-    test_dataloader = generate_test_data(tokenizer)
+
+    # Load the test data
+    test_data = pd.read_csv("../data/train_split.csv")
+    test_data = preprocess(test_data)
+    test_dataloader = generate_test_data(test_data, tokenizer)
+
+    # Test the model
     test(model, test_dataloader)

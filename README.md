@@ -13,18 +13,21 @@ Besides that, there is a `config.json` file in the `/src/` directory which conta
 
 ## 2. Training
 
-Having prepared the training dataset, you can start the training process by running the `py src/train_script.py` command, and this might take a few minutes to finish. This will create a model file inside the `backend/saved_model` directory.
+Having prepared the training dataset, you can start the training process by running the `py src/train_script.py` command, and this might take a few minutes to finish. This will create a model file inside the `docker/backend/saved_model` directory.
 
-## 3. Building
+## 3. Testing
 
-Now, after collecting all the required components for the container, you should run `docker compose build` on the root directory where the `docker-compose.yaml` is located in order to build the containers, and compose them.
+To locally evaluate the results of the trained model, you can run `py /src/test_script.py`. This will load the model and run it on the test data, which is a file named `test.csv` located inside the `/data/` directory. The current metrics is as follows:...
 
+## 4. Building
 
-## 4. Deploying
+Now, after collecting all the required components for the container, you should run `docker compose build` on the root directory, where the `docker-compose.yaml` is located in order to build the containers, and compose them.
+
+## 5. Deploying
 
 Then, you can start all the containers application by running `docker compose up` on the same root directory. This will automatically deploy the Flask application, which can be opened through this [link](http://127.0.0.1:5000/).
 
 
-## 4. Ready to Use
+## 6. Ready to Use
 
 In this Flask page above, you can enter your own sentence for phishing detection, and the model will return the classification along with its probability.

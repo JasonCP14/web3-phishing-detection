@@ -1,18 +1,28 @@
 version: "3.9"
 
+networks:
+    mynetwork:
+        driver: bridge
+
 services:
     backend:
         container_name: backend
         build:
-            context: /docker/backend
+            context: ./docker/backend
             dockerfile: Dockerfile
+        networks:
+            - mynetwork
+        ports:
+            - "5001:5001"
         volumes:
             - ./docker/backend/saved_model:/app/saved_model  
 
     frontend:
         build:
-            context: /docker/frontend
+            context: ./docker/frontend
             dockerfile: Dockerfile
+        networks:
+            - mynetwork
         ports:
             - "5000:5000"
         depends_on:

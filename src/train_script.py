@@ -1,21 +1,45 @@
-import json
-import pandas as pd
-import torch
-
 from torch.utils.data import DataLoader, TensorDataset
 from torch.optim import AdamW
 from tqdm import tqdm
 from transformers import BertForSequenceClassification, BertTokenizer
 
-with open("config.json", "r") as config_file:
+import json
+import pandas as pd
+import torch
+
+
+with open("./config.json", "r") as config_file:
     config = json.load(config_file)
 
-def generate_train_data(tokenizer):
+def preprocess(train_data: pd.DataFrame) -> pd.DataFrame:
+    """Removes leading and trailing white spaces and quotation marks.
+
+    Args:
+        train_data (pd.DataFrame): Training data
+
+    Returns:
+        pd.DataFrame: Preprocessed training data
+    """
+
+    train_data["Messages"] = train_data.Messages.str.strip("\"'\s")
+    return train_data
+
+def generate_train_data(train_data: pd.DataFrame, tokenizer: BertTokenizer) -> DataLoader:
+    """Converts the training data into a training dataloader.
+
+    Args:
+        train_data (pd.DataFrame): Training data
+        tokenizer (BertTokenizer): Bert Tokenizer
+
+    Returns:
+        DataLoader: Training dataloader
+    """
+
     batch_size = config["batch_size"]
 
-    train = pd.read_csv("../data/train_split.csv")
-    train_sentences = list(train["Messages"])
-    train_labels = list(train["gen_label"])
+    # Create tokens and labels from the training data
+    train_sentences = list(train_data["Messages"])
+    train_labels = list(train_data["gen_label"])
     train_tokens = tokenizer(train_sentences, padding=True, truncation=True, return_tensors="pt")
 
     # Create PyTorch DataLoader
@@ -25,7 +49,13 @@ def generate_train_data(tokenizer):
     return train_dataloader
 
 
-def train(model, train_dataloader):
+def train(model: BertForSequenceClassification, train_dataloader: DataLoader) -> None:
+    """Trains the model on the training data.
+
+    Args:
+        model (BertForSequenceClassification): BERT model
+        train_dataloader (DataLoader): Training dataloader
+    """
 
     # Set up training parameters
     lr = config["learning_rate"]
@@ -33,10 +63,10 @@ def train(model, train_dataloader):
     optimizer = AdamW(model.parameters(), lr=lr)
     criterion = torch.nn.CrossEntropyLoss()
 
-    # Fine-tuning loop
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
 
+    # Fine-tuning loop
     for epoch in range(num_epochs):
         model.train()
         total_loss = 0.0
@@ -57,11 +87,17 @@ def train(model, train_dataloader):
 
 
 if __name__ == "__main__":
-
+    # Initialize BERT model and tokenizer
     model_name = "bert-base-uncased"
     tokenizer = BertTokenizer.from_pretrained(model_name)
     model = BertForSequenceClassification.from_pretrained(model_name, num_labels=2)  
-    train_dataloader = generate_train_data(tokenizer)
+
+    # Load the training data
+    train_data = pd.read_csv("../data/train_split.csv")
+    train_data = preprocess(train_data)
+    train_dataloader = generate_train_data(train_data, tokenizer)
+
+    # Train the model
     train(model, train_dataloader)
 
     # Save the trained model

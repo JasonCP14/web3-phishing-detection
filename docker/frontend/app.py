@@ -1,9 +1,11 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
+
 import requests
+
 
 app = Flask(__name__)
 
-BACKEND_URL = "http://backend:5000"  # Use the service name defined in docker-compose.yml
+BACKEND_URL = "http://backend:5000"
 
 @app.route("/")
 def index():

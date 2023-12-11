@@ -1,7 +1,8 @@
+from flask import Flask, jsonify, request 
+from transformers import BertForSequenceClassification, BertTokenizer
+
 import torch
 
-from flask import Flask, request, jsonify
-from transformers import BertTokenizer, BertForSequenceClassification
 
 app = Flask(__name__)
 
@@ -20,9 +21,8 @@ def classify():
     if "text" not in data:
         return jsonify({"error": "Missing 'text' field in the request"}), 400
 
-    text = data["text"]
-
     # Tokenize and preprocess the input
+    text = data["text"].strip("\"'\s")
     tokens = tokenizer(text, padding=True, truncation=True, return_tensors="pt")
 
     # Make prediction
@@ -38,4 +38,4 @@ def classify():
     return jsonify({"result": result, "proba": proba})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=5001)
