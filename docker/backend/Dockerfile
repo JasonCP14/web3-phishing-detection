@@ -13,4 +13,3 @@ COPY . ./
 RUN pip install -r requirements.txt
 
 # Run the training script
-CMD ["python3", "./train_script.py"]

@@ -13,7 +13,7 @@ with open("config.json", "r") as config_file:
 def generate_train_data(tokenizer):
     batch_size = config["batch_size"]
 
-    train = pd.read_csv("data/train_split.csv")
+    train = pd.read_csv("../data/train_split.csv")
     train_sentences = list(train["Messages"])
     train_labels = list(train["gen_label"])
     train_tokens = tokenizer(train_sentences, padding=True, truncation=True, return_tensors="pt")
@@ -65,4 +65,4 @@ if __name__ == "__main__":
     train(model, train_dataloader)
 
     # Save the trained model
-    model.save_pretrained("./saved_model")
+    model.save_pretrained("../docker/backend/saved_model")
