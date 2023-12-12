@@ -2,10 +2,9 @@ from flask import Flask, render_template, request
 
 import requests
 
-
 app = Flask(__name__)
 
-BACKEND_URL = "http://backend:5000"
+BACKEND_URL = "http://127.0.0.1:5001"
 
 @app.route("/")
 def index():
