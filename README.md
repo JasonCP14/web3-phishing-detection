@@ -24,15 +24,15 @@ To locally evaluate the results of the trained model, you can run `py test_scrip
 
 |                     | Predicted Negative | Predicted Positive |
 |---------------------|--------------------|--------------------|
-| **Actual Negative** | 23                 | 10                 |
-| **Actual Positive** | 1                  | 67                 |
+| **Actual Negative** | 26                 | 7                  |
+| **Actual Positive** | 3                  | 65                 |
 
 | Metrics   | Value |
 |-----------|-------|
-| Accuracy  | 0.89  | 
-| Precision | 0.87  | 
-| Recall    | 0.98  |
-| F1 Score  | 0.92  | 
+| Accuracy  | 0.90  | 
+| Precision | 0.96  | 
+| Recall    | 0.90  |
+| F1 Score  | 0.93  | 
 
 ## 4. Building
 
