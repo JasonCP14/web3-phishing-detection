@@ -19,10 +19,17 @@ Having prepared the training dataset, you can start the training process by runn
 
 To locally evaluate the results of the trained model, you can run `py /src/test_script.py`. This will load the model and run it on the test data, which is a file named `test_data.csv` located inside the `/data/` directory. The current result metrics is as follows:
 
-|                     | Predicted Positive | Predicted Positive |
+|                     | Predicted Negative | Predicted Positive |
 |---------------------|--------------------|--------------------|
 | **Actual Negative** | 23                 | 10                 |
 | **Actual Positive** | 1                  | 67                 |
+
+| Metrics   | Value |
+|-----------|-------|
+| Accuracy  | 0.89  | 
+| Precision | 0.87  | 
+| Recall    | 0.98  |
+| F1 Score  | 0.92  | 
 
 ## 4. Building
 
@@ -30,7 +37,7 @@ Now, after collecting all the required components for the container, you should 
 
 ## 5. Deploying
 
-Then, you can start all the containers application by running `docker compose up` on the same root directory. This will automatically deploy the Flask application, which can be opened through this [link](http://127.0.0.1:5000/).
+Then, you can start all the containers application by running `docker compose up` on the same root directory. Wait until both frontend and backend is seen to be running inside the terminal (a message `Running on http://127.0.0.1:<port>` will be shown for both services). This will automatically deploy the Flask application, which can be opened through this [link](http://127.0.0.1:5000/).
 
 ## 6. Ready to Use
 
