@@ -89,7 +89,7 @@ if __name__ == "__main__":
     tokenizer = BertTokenizer.from_pretrained(model_name)
 
     # Load the test data
-    test_data = pd.read_csv("../data/train_split.csv")
+    test_data = pd.read_csv("../data/test_data.csv")
     test_data = preprocess(test_data)
     test_dataloader = generate_test_data(test_data, tokenizer)
 

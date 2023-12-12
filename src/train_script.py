@@ -93,7 +93,7 @@ if __name__ == "__main__":
     model = BertForSequenceClassification.from_pretrained(model_name, num_labels=2)  
 
     # Load the training data
-    train_data = pd.read_csv("../data/train_split.csv")
+    train_data = pd.read_csv("../data/train_data.csv")
     train_data = preprocess(train_data)
     train_dataloader = generate_train_data(train_data, tokenizer)
 
