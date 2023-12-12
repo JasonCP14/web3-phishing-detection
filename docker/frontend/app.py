@@ -4,14 +4,26 @@ import requests
 
 app = Flask(__name__)
 
-BACKEND_URL = "http://127.0.0.1:5001"
+BACKEND_URL = "http://backend:5001"
 
 @app.route("/")
-def index():
+def index() -> str:
+    """Renders the index page
+    
+    Returns:
+        str: The rendered index page
+    """
+
     return render_template("index.html")
 
 @app.route("/classify", methods=["POST"])
-def classify():
+def classify() -> str:
+    """Accepts the user input, sends it into the backend for classification, and renders the result page.
+
+    Returns:
+        str: The rendered result page
+    """
+
     if request.method == "POST":
         user_input = request.form["user_input"]
 
