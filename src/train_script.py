@@ -4,6 +4,7 @@ from tqdm import tqdm
 from transformers import BertForSequenceClassification, BertTokenizer
 
 import json
+import numpy as np
 import pandas as pd
 import torch
 
@@ -87,6 +88,12 @@ def train(model: BertForSequenceClassification, train_dataloader: DataLoader) ->
 
 
 if __name__ == "__main__":
+    seed_val = 2024
+    np.random.seed(seed_val)
+    torch.manual_seed(seed_val)
+    torch.cuda.manual_seed(seed_val)
+    torch.cuda.manual_seed_all(seed_val)
+
     # Initialize BERT model and tokenizer
     model_name = "bert-base-uncased"
     tokenizer = BertTokenizer.from_pretrained(model_name)
