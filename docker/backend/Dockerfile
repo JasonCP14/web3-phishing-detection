@@ -11,3 +11,6 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 COPY . ./
 RUN pip install -r requirements.txt
+
+# Run the Flask app
+CMD ["python3", "app.py"]

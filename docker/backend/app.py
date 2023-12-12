@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request 
+from flask import Flask, jsonify, request, Response
 from transformers import BertForSequenceClassification, BertTokenizer
 
 import torch
@@ -15,7 +15,13 @@ tokenizer = BertTokenizer.from_pretrained(model_name)
 model.eval()
 
 @app.route("/classify", methods=["POST"])
-def classify():
+def classify() -> Response:
+    """Classifies the input sentence using the BERT model.
+
+    Returns:
+        Response: The classification and its probability.
+    """
+
     data = request.get_json()
 
     if "text" not in data:
