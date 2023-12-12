@@ -1,6 +1,8 @@
 # Web3 Phishing Detection
 
-This file includes the requirements, as well as the steps that you need to do in order to run the phishing detection Flask app.
+This file includes the requirements, as well as the steps that you need to do in order to run the phishing detection Flask app. 
+
+**Disclaimer: Currently, the model is trained on 75% of the `test.csv`, and tested on the rest. They are named as `train_data.csv` and `test_data.csv` respectively**
 
 ## 1. Pre-requisites 
 
