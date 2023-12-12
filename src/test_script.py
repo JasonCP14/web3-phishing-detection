@@ -4,6 +4,7 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 
 import json
 import torch
+import numpy as np
 import pandas as pd
 
 
@@ -83,6 +84,12 @@ def test(model: BertForSequenceClassification, test_dataloader: DataLoader) -> N
     print(classification_rep)
 
 if __name__ == "__main__":
+    seed_val = 2024
+    np.random.seed(seed_val)
+    torch.manual_seed(seed_val)
+    torch.cuda.manual_seed(seed_val)
+    torch.cuda.manual_seed_all(seed_val)
+
     # Retrieve BERT model and tokenizer
     model_name = "bert-base-uncased"
     model = BertForSequenceClassification.from_pretrained("../docker/backend/saved_model")
